@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Boyfriend's Day</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff5f8;--red:#e0577f;--gold:#c2437a;--ink:#5a3a48;--mute:#9a7a89;--blush:#ffe3ec}
+  html{scroll-behavior:smooth}
+  body{color:var(--ink);font-family:'Quicksand',system-ui,sans-serif;min-height:100vh;
+       background:radial-gradient(circle at 8% 0%,#ffdce9,transparent 45%),radial-gradient(circle at 95% 18%,#ece6ff,transparent 40%),
+                  radial-gradient(circle at 50% 100%,#fff0dd,transparent 45%),var(--bg);background-attachment:fixed}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Ctext x='18' y='40' font-size='18' opacity='.22'%3E💗%3C/text%3E%3Ctext x='88' y='110' font-size='13' opacity='.2'%3E🕸️%3C/text%3E%3Ctext x='96' y='34' font-size='11' opacity='.18'%3E🌸%3C/text%3E%3C/svg%3E")}
+  .display{font-family:'Dancing Script',cursive;font-weight:700}
+  main,header{position:relative;z-index:1}
+  .card{position:relative;background:#fff;border:1.5px solid #ffd0df;border-radius:24px;box-shadow:0 10px 30px rgba(224,87,127,.12),0 0 0 4px rgba(251,189,8,.07)}
+  .sticker{position:absolute;top:-18px;right:-8px;width:50px;height:50px;transform:rotate(10deg);filter:drop-shadow(0 3px 4px rgba(224,87,127,.3))}
+  .badge{width:58px;height:58px;border-radius:50%;background:#fff;border:2.5px solid #ffc2d4;box-shadow:0 4px 14px rgba(224,87,127,.25);padding:4px;flex:none}
+  .seg{height:8px;border-radius:99px;background:#ffe3ec;overflow:hidden;flex:1}
+  .seg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9ebb,#ffb86b);transition:width .6s ease}
+  .seg.done i{width:100%}
+  .page{display:none}
+  .page.active{display:block;animation:inR .55s cubic-bezier(.2,.8,.2,1)}
+  body.back .page.active{animation-name:inL}
+  @keyframes inR{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes inL{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .headline{color:var(--gold);text-shadow:2px 3px 0 #ffd9e5;line-height:1.1}
+  .btn{font-weight:700;padding:.85rem 1.5rem;border-radius:999px;border:2px solid #ffc2d4;color:var(--gold);background:#fff;transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(224,87,127,.25)}
+  .btn.primary{background:linear-gradient(135deg,#ff8fb1,#ff6b95);border-color:transparent;color:#fff;box-shadow:0 8px 22px rgba(255,107,149,.45);animation:pulse 3.5s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 8px 26px rgba(255,107,149,.6)}}
+  :focus-visible{outline:3px solid #ff8fb1;outline-offset:3px}
+  .quote{font-family:'Dancing Script',cursive;font-size:1.6rem;color:var(--gold);background:linear-gradient(90deg,#fff0f5,#fff);border-left:5px solid #ffb86b;border-radius:0 18px 18px 0;padding:.8rem 1.1rem}
+  .frame{background:#fff;padding:10px 10px 0;border-radius:18px;border:1.5px solid #ffd0df;box-shadow:0 12px 28px rgba(224,87,127,.18);transition:transform .25s}
+  .frame:nth-child(odd){transform:rotate(-1.5deg)} .frame:nth-child(even){transform:rotate(1.5deg)}
+  .frame:hover{transform:rotate(0) scale(1.02)}
+  .frame figcaption{font-family:'Dancing Script',cursive;font-size:1.3rem;color:var(--gold);padding:.6rem;text-align:center}
+  .ph{position:relative;aspect-ratio:4/3;display:grid;place-items:center;color:var(--mute);text-align:center;font-size:.95rem;background:var(--blush);border-radius:12px;overflow:hidden}
+  .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ph img[src=""]{display:none}
+  #fb{width:100%;height:auto;border-radius:18px;cursor:pointer;touch-action:manipulation}
+  /* lake */
+  .ripple{transform-box:fill-box;transform-origin:center;animation:rip 4s ease-in-out infinite}
+  .om{animation:omg 3.5s ease-in-out infinite}
+  @keyframes rip{50%{transform:scaleX(1.18);opacity:.35}}
+  @keyframes omg{50%{filter:drop-shadow(0 0 10px #fff)}}
+  /* night terrace */
+  .sky{position:relative;height:260px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#8d7fd6,#d8a0d0 65%,#ffc4b0)}
+  .star{position:absolute;font-size:26px;color:#fff6c9;background:none;border:0;cursor:pointer;opacity:.7;transition:transform .2s}
+  .star:hover{transform:scale(1.3)}
+  .star.lit{opacity:1;text-shadow:0 0 14px #ffe27a,0 0 28px #ffd1e3;transform:scale(1.4)}
+  /* letter */
+  .letter{max-height:0;opacity:0;overflow:hidden;transition:max-height 1.2s ease,opacity .8s}
+  .letter.open{max-height:70rem;opacity:1;margin-top:1.5rem}
+  .paper{background:#fffdf7;border:2px solid #ffe0a8;border-radius:18px;padding:1.5rem;text-align:left;font-family:'Dancing Script',cursive;font-size:1.6rem;line-height:1.5;color:var(--gold)}
+  .open .paper{animation:glow 2.5s ease-in-out 1}
+  @keyframes glow{40%{box-shadow:0 0 40px rgba(251,189,8,.7)}}
+  .fl{position:fixed;pointer-events:none;z-index:50;font-size:24px;animation:fl 1.8s ease-out forwards}
+  @keyframes fl{to{transform:translate(var(--dx),-190px) scale(1.3);opacity:0}}
+  @media (prefers-reduced-motion:reduce){.page.active,.btn.primary,.ripple,.om,.open .paper{animation:none}.seg i{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="cow" viewBox="0 0 64 64">
+    <path d="M14 20 L10 8 L23 15Z M50 20 L54 8 L41 15Z" fill="#ffd9a8"/>
+    <ellipse cx="9" cy="27" rx="9" ry="5" transform="rotate(-25 9 27)" fill="#ffc2d4"/>
+    <ellipse cx="55" cy="27" rx="9" ry="5" transform="rotate(25 55 27)" fill="#ffc2d4"/>
+    <ellipse cx="32" cy="35" rx="21" ry="20" fill="#fff"/>
+    <ellipse cx="46" cy="24" rx="7" ry="6" fill="#f3d3df"/>
+    <circle cx="23" cy="35" r="3" fill="#4a2c3a"/><circle cx="41" cy="35" r="3" fill="#4a2c3a"/>
+    <circle cx="24" cy="34" r="1" fill="#fff"/><circle cx="42" cy="34" r="1" fill="#fff"/>
+    <ellipse cx="15" cy="42" rx="4" ry="2.5" fill="#ffb3c9" opacity=".8"/><ellipse cx="49" cy="42" rx="4" ry="2.5" fill="#ffb3c9" opacity=".8"/>
+    <ellipse cx="32" cy="50" rx="13" ry="8" fill="#ffc2d4"/>
+    <ellipse cx="27" cy="50" rx="2" ry="2.6" fill="#e58aa6"/><ellipse cx="37" cy="50" rx="2" ry="2.6" fill="#e58aa6"/>
+    <path d="M32 26 C25 20 28 13 32 17 C36 13 39 20 32 26Z" fill="#ff6b8f"/>
+  </symbol>
+</svg>
+
+<header class="px-4 pt-4 max-w-5xl mx-auto">
+  <div class="flex items-center justify-center gap-3">
+    <div class="text-center">
+      <p class="display text-2xl sm:text-3xl" style="color:var(--gold)">Happy Boyfriend's Day</p>
+      <p id="pageLabel" class="text-sm" style="color:var(--mute)">Chapter 1 of 5</p>
+    </div>
+  </div>
+  <div id="progress" class="flex gap-2 mt-3" role="progressbar" aria-label="Chapter progress"></div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-10" id="pages"></main>
+
+<script>
+/* ============ YOUR CONTENT: edit photo URLs here ============ */
+const CH = [
+ { name:'The Simple Guy & The Foosball Table', art:'foos', next:'Sunsets & Lakes',
+   quote:"In every multiverse, I'd still choose you.",
+   story:`At first, I honestly thought you were just a simple, quiet guy who came over to hang out with my roommate. I didn't think much of it back then... until the foosball games started! Teaming up, laughing over silly shots, and competing at that table was the exact moment everything changed. Suddenly, you weren't just my roommate's friend anymore—you became the person I looked forward to seeing every single day.`,
+   photos:[
+     ['baby.jpeg', 'The First Impression'],
+     ['download.jfif', 'Foosball Champions'] ] },
+ { name:'Sunsets Near the Lake & Shiv Ji Temple', art:'lake', next:'Brand New Day',
+   quote:"With you, even quiet evenings feel like magic.",
+   story:`Our friendship grew so effortlessly from those daily games into deep, quiet conversations. My favorite memories were sitting near the calm lake waters together, watching the golden sunsets paint the sky. And visiting the Shiv Ji temple with you filled my heart with so much peace. In those quiet, sacred moments, I realized just how gentle, kind, and special your soul really is.`,
+   photos:[
+     ['sunset image.jpeg', 'Sunset By The Lake'],
+     ['shiv ji temple.jpeg', 'Shiv Ji Temple Visit'] ] },
+ { name:'Shifting Hostels & The Movie Date Proposal', art:'web', next:'Terrace Nights',
+   story:`Even when we shifted out of our hostels and moved to different places, the distance didn't change a single thing between us—we stayed as close as ever. Then came our movie date for 'Brand New Day.' That night, when you asked me to be yours, my heart completely stopped. Out of every timeline and every universe, that was the exact moment my life became a million times brighter.`,
+   photos:[
+     ['date.jpeg', 'Moving Out & Staying Close'],
+     ['image 5.jpeg', "The 'Brand New Day' Movie Date & Proposal"] ] },
+ { name:'Terrace Dancing & Late-Night Ice Cream', art:'night', next:'The Love Letter',
+   quote:"Under any sky, you're my favorite view.",
+   story:`Once our relationship started, every day felt like a dream. Dancing with you under the open sky on the terrace, with the cool night breeze and soft starlight around us, made time feel like it stood completely still. And of course, our endless late-night ice cream runs—laughing over sweet treats in the middle of the night—became my absolute favorite cozy ritual with you.`,
+   photos:[
+     ['terrace.jpeg', 'Memories I Cherish'],
+     ['image 4.jpeg', 'Memories I Cherish'] ] },
+ { name:"To My Favorite Superhero (Happy Boyfriend's Day)", art:'letter', next:null, photos:[] }
+];
+
+/* ============ Interactive art blocks ============ */
+const mask = `<path d="M12 29 Q32 24 52 29 L50 39 Q32 34 14 39Z" fill="#ff5c7a"/><path d="M17 31 L29 33 L27 37 L18 36Z M47 31 L35 33 L37 37 L46 36Z" fill="#fff" stroke="#4a2c3a" stroke-width="1"/>`;
+const ART = {
+ foos:()=>`<div class="card p-3"><canvas id="fb" width="640" height="360" aria-label="Cute foosball table with a bouncing heart. Tap to send it flying."></canvas>
+   <p class="text-center text-sm mt-2" style="color:var(--mute)">💕 <b id="hits" style="color:var(--gold)">0</b> love passes. Tap the table to send the heart flying.</p></div>`,
+ lake:()=>``,
+ web:()=>`<div class="card p-6 text-center"><p class="quote">You're my favorite superhero in every universe.</p>
+   <button type="button" class="btn primary mt-5" data-act="web">🕸️ Shoot a web</button><p class="text-sm mt-3" style="color:var(--mute)">Tap and see what your web catches.</p></div>`,
+ night:()=>``,
+ letter:()=>`<div class="card p-6 text-center"><button type="button" class="btn primary" data-act="open" aria-expanded="false">Open Love Letter 💌</button>
+   <div id="letter" class="letter"><div class="paper"><p>My Love,</p><p class="mt-3">From a random guy at my roommate's door to the absolute center of my world, loving you has been the sweetest journey of my life. Thank you for your warmth, your silly jokes, your gentle heart, and the way you make every simple day feel extraordinary. You are my home, my comfort, and my favorite superhero.</p><p class="mt-3">I Love You 3000! Happy Boyfriend's Day! ❤️</p></div></div></div>
+   <div class="text-center mt-8"><button type="button" class="btn primary display" style="font-size:2.2rem;padding:1rem 2.5rem" data-act="ily">I Love You 3000 💖</button></div>
+   <div class="card p-4 mt-8 text-center"><svg viewBox="0 0 220 125" width="260" role="img" aria-label="Cow and Spider-Man holding hands" class="mx-auto">
+     <ellipse cx="50" cy="100" rx="26" ry="20" fill="#fff" stroke="#ffc2d4" stroke-width="2"/><svg x="10" y="8" width="80" height="80"><use href="#cow"/></svg>
+     <ellipse cx="170" cy="100" rx="26" ry="20" fill="#9db4ff"/><circle cx="170" cy="48" r="28" fill="#f2708a"/>
+     <path d="M170 20V76M142 48H198M150 28L190 68M190 28L150 68" stroke="#c94a68" stroke-width="1"/>
+     <path d="M153 44 L167 50 L164 57 L154 53Z M187 44 L173 50 L176 57 L186 53Z" fill="#fff" stroke="#4a2c3a"/>
+     <path d="M76 100H144" stroke="#ffc2d4" stroke-width="7" stroke-linecap="round"/><text x="110" y="92" text-anchor="middle" font-size="18">❤️</text></svg>
+     <p class="display text-3xl headline">Forever My Favorite Superhero</p></div>`
+};
+
+/* ============ Build pages ============ */
+const main = document.getElementById('pages'), bar = document.getElementById('progress'), N = CH.length;
+CH.forEach((c, i) => {
+  const s = document.createElement('section'); s.className = 'page' + (i ? '' : ' active');
+  const story = c.story ? `<article class="card p-6"><svg class="sticker" aria-hidden="true"><use href="#cow"/></svg>
+      <p class="text-lg leading-relaxed">${c.story}</p>${c.quote ? `<p class="quote mt-5">🕸️ ${c.quote}</p>` : ''}</article>` : '';
+  const photos = c.photos.length ? `<div class="grid sm:grid-cols-2 gap-8 mt-10">${c.photos.map(([src, cap]) => `
+      <figure class="frame"><div class="ph"><img src="${src}" alt="${cap}"></div><figcaption>${cap}</figcaption></figure>`).join('')}</div>` : '';
+  s.innerHTML = `<h2 class="text-xl font-bold" style="color:var(--red)">Chapter ${i+1}</h2>
+    <h1 class="display headline text-4xl sm:text-6xl mt-1 mb-8">${c.name}</h1>
+    ${c.story ? `<div class="grid lg:grid-cols-2 gap-6 items-start">${story}${ART[c.art]()}</div>` : ART[c.art]()}
+    ${photos}
+    <div class="flex ${i ? 'justify-between' : 'justify-end'} gap-3 mt-10">
+      ${i ? `<button type="button" class="btn" data-go="${i-1}">⬅ Previous Chapter</button>` : ''}
+      ${c.next ? `<button type="button" class="btn primary" data-go="${i+1}">Next Chapter: ${c.next} ➔</button>` : ''}
+    </div>`;
+  main.appendChild(s);
+});
+bar.innerHTML = CH.map(() => '<div class="seg"><i></i></div>').join('');
+const pages = [...document.querySelectorAll('.page')];
+let current = 0;
+function paint(){
+  document.getElementById('pageLabel').textContent = `Chapter ${current+1} of ${N}`;
+  bar.setAttribute('aria-valuenow', current+1); bar.setAttribute('aria-valuemax', N);
+  [...bar.children].forEach((sg, i) => sg.classList.toggle('done', i <= current));
+}
+function go(n){
+  if (n < 0 || n >= N || n === current) return;
+  document.body.classList.toggle('back', n < current);
+  pages[current].classList.remove('active'); current = n; pages[n].classList.add('active');
+  paint(); window.scrollTo({top:0, behavior:'smooth'});
+}
+paint();
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(current+1);
+  if (e.key === 'ArrowLeft') go(current-1);
+});
+
+/* ============ Floating hearts + actions ============ */
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burst(x, y, chars, n = 10){
+  if (calm) return;
+  for (let k = 0; k < n; k++) {
+    const e = document.createElement('span'); e.className = 'fl';
+    e.textContent = chars[Math.floor(Math.random()*chars.length)];
+    e.style.left = (x + Math.random()*60-30) + 'px'; e.style.top = y + 'px';
+    e.style.setProperty('--dx', (Math.random()*160-80) + 'px');
+    e.style.animationDelay = (Math.random()*.4) + 's';
+    document.body.appendChild(e); setTimeout(() => e.remove(), 2400);
+  }
+}
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]'); if (g) return go(+g.dataset.go);
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const r = b.getBoundingClientRect(), x = r.left + r.width/2, y = r.top;
+  const a = b.dataset.act;
+  if (a === 'web') burst(x, y, ['🕸️','💗','🕸️','💖'], 14);
+  if (a === 'star') { b.classList.toggle('lit'); burst(x, y, ['♪','🎵','✨'], 5); }
+  if (a === 'open') { const l = document.getElementById('letter'); const o = l.classList.toggle('open'); b.setAttribute('aria-expanded', o); b.textContent = o ? 'Close Love Letter 💌' : 'Open Love Letter 💌'; }
+  if (a === 'ily') {
+    burst(x, y, ['💖','💗','💕','🕸️','❤️'], 22);
+    if (window.confetti && !calm) { confetti({particleCount:140, spread:90, origin:{y:.7}, colors:['#ff8fb1','#ffb86b','#b9a7f5','#fff']}); setTimeout(() => confetti({particleCount:90, spread:120, origin:{y:.6}}), 400); }
+  }
+});
+
+/* ============ Foosball (chapter 1) ============ */
+(function(){
+  const cv = document.getElementById('fb'), c = cv.getContext('2d'), W = 640, H = 360;
+  const rods = [{x:90,col:'#f58fb0'},{x:230,col:'#f58fb0'},{x:410,col:'#b9a7f5'},{x:550,col:'#b9a7f5'}];
+  const ball = {x:W/2, y:H/2, vx:calm?0:3.2, vy:calm?0:2.1, r:9};
+  const hitsEl = document.getElementById('hits'); let hits = 0, t = 0;
+  const players = (rod, i) => [60,180,300].map(y => ({x:rod.x, y:y + (calm ? 0 : Math.sin(t*(1+i*.35)+i*1.7)*42)}));
+  function step(){
+    if (current === 0) {
+      t += .03; ball.x += ball.vx; ball.y += ball.vy;
+      if (ball.y < ball.r || ball.y > H-ball.r) { ball.vy *= -1; ball.y = Math.max(ball.r, Math.min(H-ball.r, ball.y)); }
+      if (ball.x < ball.r || ball.x > W-ball.r) { ball.vx *= -1; ball.x = Math.max(ball.r, Math.min(W-ball.r, ball.x)); }
+      rods.forEach((rod, i) => players(rod, i).forEach(p => {
+        if (Math.abs(ball.x-p.x) < 8+ball.r && Math.abs(ball.y-p.y) < 19+ball.r) {
+          ball.vx = Math.sign(ball.x-p.x || 1) * Math.max(Math.abs(ball.vx), 3);
+          ball.vy += (ball.y-p.y) * .06; ball.x = p.x + Math.sign(ball.vx)*(8+ball.r+1);
+          hitsEl.textContent = ++hits;
+        }
+      }));
+      const sp = Math.hypot(ball.vx, ball.vy);
+      if (sp > 6.5) { ball.vx *= 6.5/sp; ball.vy *= 6.5/sp; }
+      if (sp < 2.8 && sp > 0) { ball.vx *= 2.8/sp; ball.vy *= 2.8/sp; }
+      draw();
+    }
+    requestAnimationFrame(step);
+  }
+  function draw(){
+    c.fillStyle = '#fdeff3'; c.fillRect(0,0,W,H);
+    c.strokeStyle = 'rgba(240,130,165,.6)'; c.lineWidth = 3; c.strokeRect(2,2,W-4,H-4);
+    c.lineWidth = 2; c.strokeStyle = 'rgba(240,130,165,.3)';
+    c.beginPath(); c.moveTo(W/2,0); c.lineTo(W/2,H); c.stroke(); c.beginPath(); c.arc(W/2,H/2,52,0,7); c.stroke();
+    rods.forEach((rod, i) => {
+      c.strokeStyle = '#e3cbd6'; c.lineWidth = 5; c.beginPath(); c.moveTo(rod.x,0); c.lineTo(rod.x,H); c.stroke();
+      players(rod, i).forEach(p => { c.fillStyle = rod.col; c.beginPath(); c.roundRect(p.x-8, p.y-19, 16, 38, 8); c.fill(); c.fillStyle = '#fff'; c.fillRect(p.x-5, p.y-10, 10, 4); });
+    });
+    c.font = '26px serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('💗', ball.x, ball.y+1);
+  }
+  cv.addEventListener('pointerdown', e => {
+    const r = cv.getBoundingClientRect(), tx = (e.clientX-r.left)*W/r.width, ty = (e.clientY-r.top)*H/r.height, d = Math.hypot(tx-ball.x, ty-ball.y) || 1;
+    ball.vx = (tx-ball.x)/d*5; ball.vy = (ty-ball.y)/d*5;
+  });
+  draw(); requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
